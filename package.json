@@ -1,0 +1,30 @@
+{
+  "name": "xpiral",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A javascript library powered to solve algbera symbolic computation problems ",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xpiral397/xpiral-math.git"
+  },
+  "keywords": [
+    "XpiralMath"
+  ],
+  "author": "Xpiral",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xpiral397/xpiral-math/issues"
+  },
+  "homepage": "https://github.com/Xpiral397/xpiral-math#readme"
+}

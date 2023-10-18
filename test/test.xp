@@ -1,0 +1,215 @@
+
+
+
+
+function ExprssionSpliter(innerExpr, rendinering = false) {
+  
+    if (rendinering && innerExpr.endsWith('^')) {
+        innerExpr = reverse(innerExpr); let on = false; let brack = ''; let onalpha = false;
+        for (let read of innerExpr) {
+            if (read == ')') {
+                on = true
+            }
+            if (on) {
+                brack += read
+                if (isBalanced(brack)) {
+                    return reverse(brack) + '^'
+                }; continue
+            }
+            //print(read,'complete')
+            if (IsAlpha(read)) {
+                return read + '^'
+            }
+        }
+    }
+    else if(rendinering){return innerExpr}
+    else {
+        let x = []; let y = true; let result = ''
+        if(innerExpr.includes('(')){
+            let x_ = priority.toPureState(innerExpr.replaceAll(' ',''),'(')
+            let y_ = priority.toNumState(innerExpr.replaceAll(' ',''),true,'(')
+            if(x_&&!'+-'.includes(x_)){
+                //throw new Error([x_,innerExpr])
+                return x_
+            }
+            if(y_.length>1){
+                return y_[0]+y_[1]
+            }
+            return innerExpr
+        }
+        if (priority.toPureState(innerExpr) && !'-+'.includes(priority.toPureState(innerExpr))) {
+            return priority.toPureState(innerExpr)
+        }
+        for (let r of innerExpr) {
+            result += r;
+            if (IsAlpha(r)) {
+               // print(r,'golbe')
+                //throw new TypeError(r)
+                if (result.includes('+') || result.includes('^') || result.includes('(') || result.includes(')') || result.includes('-')) {
+                    return engulf(result);
+                }
+                return result
+            }
+        }
+        return result
+    }
+}
+
+
+
+
+//301 : 930
+//let x = new Expr('29c^-1(9x-4y)x^(v-4)-3y')
+//print(x.format())//(9x-4xy)(7x-3xy(v-x^(9x-3y-v^(3x-5y))-5))(7x-3xy(v-x^(9x-3y-v^2)-5))(7x-3xy(v-x^(9x-3y-v^2)-5))')//(x^(9x-2)(v-2(6x^(9x-2)(v-2))(6x^(9x-2)(v-2))))')//6xy(qtx^(9c-vx)y^(x-56y)-9x^((9c-vx+1)-vx+9c)y^(x-56y)-3x^((9c-vx+1+1-vx+9c)-vx+9c)y^(x-6y)-1x^((9c-vx+1+1-vx+9c+1-vx+9c)-vx+9c)y^(x-y)+2x^((9c-vx+1+1-vx+9c+1-vx+9c)+1-vx+9c)(-7x^(9c-vx)y^(x-vy)-49x^((9c-vx+1)-vx+9c)y^(x-y)-3x^((c-vx+1+1-vx+9c)-vx+9c)y^(x-6y)-24x^((9c-vx+1+1-vx+9c+1-vx+9c)-vx+9c)y^(x-56y)+21x^((9c-vx+1+1-vx+9c+1-vx+9c)+1-vx+9c)(7x^(9c-vx)(x-y^(x-6y)))(7x^(9c-vx)(x-y^(x-16y)))(7x^(9c-vx)(x-y^(y)))(7x^(9c-vx)(x-y^(v-v^2)))))'))//(2-x)(7(c(6-(v-2)))y)(7)')//.mul('5x^-7xy^-7q-7xv(b)^-6-6x^(x-y)-xv^-9x(uv)')//')//x(a(b(c(d(e(f(g(h(i(j(k(l(m)l)k)j)i)h)g)f)e)d)c)b)a)xx(a(b(c(d(e(f(g(h(i(j(k(l(m)l)k)j)i)h)g)f)e)d)c)b)a)x')
+//print(new Expr('2').mul('2')+'')29c^-1(9x-4y)x^(v-4)-3y
+//print(getScope('2', false, Expr))
+//print(SyncExpr(['6(x-5y)', '5x(2-3y)', '-72', '2', 'x-y', 'x', 'y'],false,Expr))
+//print(priority.bestfit([['x','y','x','y'],['x','x','y','z'],['x','y','x','y']]))
+//print(getScope('(c-y)^-7',Expr))
+//print(new Factorize('-2-7xy-5ty',Expr).getLocalFactoriztion())//(5v^(6x-1)(10-vy(x-y)))(v-3)(6x-qxyx(2x^(x)-5xy)(6x-qxyx(2x^(x)-5xy)))
+//print(new Expr('1').mul('- 5v^((6x-1)+ 1)xy + 50v^(6x- 1) + 5v^((6x- 1)+1)y^2').mul('2')+'')//.mul('+6x- 10q^2x^((2+ (x))+3)y^3 - 10q^2x^(3+ ((x)+2))y^3 - 12qx^((2+ (x))+1)y + 25q^2x^6y^4 + 30qx^4y^2 + 4q^2x^((2+(x))+((x)+2))y^2').mul('+v-3')+'')
+//(9x-4xy)(7x-3xy(v-x^(9x-3y-v^2)-5))(7x-3xy(v-x^(9x-3y-v^2)-5))(7x-3xy(v-x^(9x-3y-v^2)-5))
+// 3/(3/2/(2/3/2/4/(9/2)))5(vx-2xy-3xy)2(9v-6v-4xy^2)8(x-1)6y^3x^(9x-5y)
+
+
+
+
+
+
+
+let k = 't^4v^4x^4y^4+t^4x^4y^4-2v^2t^4x^4y^4-4pt^3v^3x^3y^3-2t^3x^3y^3v^4+4pvt^3x^3y^3+2v^2t^3x^3y^3+t^2x^2y^2v^4+6p^2t^2v^2x^2y^2+4pt^2x^2y^2v^3-2p^2t^2x^2y^2-2txyp^2v^2-4tvxyp^3+2v^2t^3y^3x^4-2t^3y^3x^4+t^2y^2x^4-4pvt^2y^2x^3-2t^2v^2y^2x^3+2typ^2x^2+p^4'
+
+
+
+
+
+
+
+
+
+
+/*
+let _x = new Expr('5x^1-bgu^2x-bguvx-cgu^2v-gou^2x-gouvx+1bgu^2v+1bgux^2+1cgu^2x+1cguvx+1gou^2v+1goux^2-cgux^2-bguv^6x-bgv^7x-cguv^7-gouv^6x-gov^7x+1bguv^7+1bgv^6x^2+1cguv^6x+1cgv^7x+1gouv^7+1gov^6x^2-cgv^6x^2+1bgpux+1bgpvx+1cgpuv+1gopux+1gopvx-bgpuv-bgpx^2-cgpux-cgpvx-gopuv-gopx^2+1cgpx^2')//.rmul('p-u-v^6')//.rmul('x-u').rmul('c-b-o').rmul('g').rmul('p-u-v-v^6')
+//let __x =new  Expr(new Expr(_x+'').mul('p')+'' +'+ '+ new Expr(_x).mul('-u')+'+'+new Expr(_x).mul('-v^6')+'')+''//'-  tuyz^(9x-xy) +  xz').mul('q-v').mul('x-y-z-t')
+
+print(_x+'999')
+print(_x.examine.join().replaceAll(',',''))
+//console.log(_x.mul('x-6')+'')  
+//console.log(_x.reCompiler('x(v-u)(n^(x-ty))(x(v-u)n^(x-ty))')+'     000000000000000')  
+console.log(_x.reCompiler('7x^( (x - v)(u -xy)-6q^( vx - uy^(t+2) ) )( 7y(nQ^(x-v)xy )v^(5-2y) )')+'     000000000000000') 
+_x.NotchType.current.state = 'Congrent' 
+//console.log(_x.reCompiler('(x-v)(x-u)')+'') 
+//print(_x,'=========================================================================================================================================')
+//console.log(_x.NotchType.current.state,_x.SingleSimpify('(y^((vmui)(ytr))(u)')+'')
+
+
+//console.log(_x.reCompiler('-c(t-4y-u(t-5cy^(9x-4y))-t-4y-u(t-y-t-4y-u(t-y))-c(-c(t-4y-u(t-y)))) ')+'') 
+
+console.log(_x.reCompiler('5x-2xy(15x-2y)-3x^(2xy-15y^2y)')+"")
+//(v-1(4-u(t-y)))  
+//print(gfrmBack('5(x-1)v^(x-v^1)(6y-4)'))
+//print(V)
+//print(_x.SingleSimpify('vu^(9x-4y)(1)'))
+//print(count('cyt^(x-v^v^v)','v^')) kkkkkkkkkkkkmnm n
+*
+/
+//x^((x^3v^(9x-5y-v-4)~~~x^7)~~~x^(5x-4y2)(v-4)~~~9(v6rr)~~~6tf^(90c^7(x-y))~~~5f6v^2(j)
+//print(getScope('(9x)^(4(7x-4xy(c-n)(15x-5y)^(-2x)(6x-5)-6x))', Expr))
+//let u = new Struct({ deno: '90-xy', num: '2', coeff: '3' },{mode:'Fraction'})
+//print(new UnifySyncExpr(u,Expr).mul('9x').format())
+//getScope('6x(-(9x)^(2x-5y)(9x)^(2x-5k)-9x)(7x/((9x-y)-5x)/6x/7)/b/map
+//print(x.Simp().format())(x-8y-y)/((7x/(6x/(4/2))/7))*/
+//const concrete = new Fractions('(x-8y-y)/((7x/(6x/(4/2))/7))')
+//print(CompileExpr('x^((x^3v^(9x-5y-v-4)x^7)x^((5x-4y2)^2)(v+4)^9(v6rr)6tf^(90c^(7(x-y))v^6)5f6v^2(j)'),'locck')
+//print(concrete.toFraction(['9c^-1(9x-4y)x^(v-4)-3y','4v^-3x']))(((9c/4/12)/7)/5y/3y)/(-k/(k/(v)))/3/r
+//(((9c/4/12)/7)/5y/3y)/(-k/(k/(v)))/3/r
+//print(Div(['3x/1']),priority.reduceFraction(str('-3.7912878474779'/3)))
+//print(new Expr('(2x^2+5x-7)(3x^2-x+6)').Simp().format())
+//print(priority.bestfit([['x','y','z','x'],['x','y','z','x','x'],['u','x','x']]))1
+//print(concrete.destruct('c^2-8/c-6'),typeof pos('-'))
+//print(new Expr('v^7-v^-5+8x^4-3xy^6-z^6-a^6').Simp().OrderExpr()+'')
+'67x^3-6y^2-7x^5ye^2' //-64t^3x^3/3x+48x^2t^3-48t^2x^2-12xt^3+24xt^2-12txy/7xy+t^3-3t^2+3t-1
+//print(new Expr('-27x^6+243x^5-729x^4-125x^3y^3+729x^3-4200x^2y^3-13104x^2y^2-47040xy^3+84672xy^2-175616y^3-225y^2x^4-4365y^2x^3-135yx^5-702yx^4+7857yx^3-13608yx^2').Simp()+'')
+//print(JSON.stringify(concrete.div('-27x^6+243x^5-729x^4-125x^3y^3+729x^3-4200x^2y^3-13104x^2y^2-47040xy^3+84672xy^2-175616y^3-225y^2x^4-4365y^2x^3-135yx^5-702yx^4+7857yx^3-13608yx^2','-3x^2-5xy+9x-56y')))
+//print(concrete.div(new Expr('(5x-3xy+2)^(3)').Simp(),new Expr('(5x-3xy+2)^(4)').Simp()),'op')
+//print(exportExprKey(['x',' ( 2-6x)','y','2']))
+//vars('9x^(6xy)'),concrete.toFraction(['28.8a^(-1)q^(-1)t^2y^2']))
+//const keyword = {domit:{treeS:['oranges','AppleTrees','mangoTrea']},Fruits:['oranges','magoes'],domits:[{dome:{tree:['oranges','pineapple','Grapes']},Fruits:['oranges','magoehs','j'],domits:{tree:['oranges','pineapple','Grapes']},Fruitts:['oranges','magoehs','j']}]}
+//const keywords = {domit:{tree:['oranges_','dollars']},Fruits:['oranges','milk'],domits:[{dome:{tree:['blue oranges','red pineapple','green Grapes']},Fruits:['oranges','five-magoehs','j'],domits:{tree:['oranges','pineapple','10 Grapes']},Fruitts:['oranges','20 crisesmagoehs','j']}]}
+//let x  = Trackprops(keyword,keywordcs)
+// let b = (q)=>{return true}
+// let x = LikeTerms(new Expr('-2Tx').Simp().format(),
+// {filterby: '-2Tx',accuracy:{onlyRange:false,range:{command:'>',every:true,selectElement:{all:true},defaultOperation:()=>{return '<='}}}})
+// print(x) 4x^6y^7yk+8x^6ytk+4utx^7k+4x^2ky
+//let peak = new Expr('x^3-6x^2+11x-6').Simp()
+//let y = list('x1y2k3m5'),y_ = {};
+//y_[y] = '7-25xy'(x-y)^6-x^5-yx^6            
+const seps = '9ktux^2+2tvxy^2+9ktvx^2-2tuxy^2+18ktuxy-2vxzy^2+tuyx^2+18kvxyz-18ktvxy-18kuxyz+2uxzy^2-tvyx^2+vyzx^2-uyzx^2+9kuzx^2-9kvzx^2'
+const sep2 = '9ktvx^2-9ktux^2+2tvxy^2-2tuxy^2+18ktuxy+18kvxyz-18ktvxy-18kuxyz+2uxzy^2-2vxzy^2+tuyx^2-tvyx^2+vyzx^2-uyzx^2+9kuzx^2-9kvzx^2'
+const sep3 = 'tx^2-tux+xy^2+uxy-txy-uy^2+tuy-yx^2'
+const sep4 = 'pctx+oupx-copx-tuxp+copy+tupy-ctpy-opuy'
+    //const sep5 = new Expr('(x-u)(x-ut)(x-ty)(x-jo)(op-zw)(qa-px)').Simp().format()
+const sep6 = 'ky+qy-cy+kz+qz-cz+cv-kv-qv'
+const sep7 = '18x^3-21x^2+8x-1'
+    //throw format(y_)81x^2y^2+12t^2y^2-63txy^2'63x^2+16xy^2-36xy-28yx^2
+    //print(new Factorize('').createModel(seps))
+    //print(new Factorize('').createModel(sep2))
+    //print(new Factorize('').createModel(sep3))
+    //print(new Factorize('').createModel(sep4)
+    //)72x^3-168x^2+126xy+48x-54yx^2-36y
+    //let ky = new Factorize('').createModel('729x^3+99xy^2-6y^3-486yx^2')
+    //print(Div('((81x^2-54x+9)/(9x-3))'))
+    //6823543vx^7-823543x^7+78764805vx^3y^4-78764805x^3y^4-60761421vx^2y^5+60761421x^2y^5+26040609vxy^6-26040609xy^6-4782969vy^7+4782969y^7-61261515vy^3x^4+61261515y^3x^4+28588707vy^2x^5-28588707y^2x^5-7411887vyx^6+7411887yx^6
+    //print(factorize('54vx^3-54ux^3+465ux^2-465vx^2+644vx-644ux+245u-245v'))
+    //print(factorize('x^2+35-12x'))
+const reiffs = '12xy(((6c^5-30vc^4+60v^2c^3-60c^2v^3+30cv^4-6v^5)-(12x-6y)))'
+const sep_7 = '8x(12ytx^12-8x(12ytx^12-6xt^17-(12xt^12-(12tx-12yx^14)))-6xt^17-(12xt^12-(12tx-12yx^14)))'
+priority.reduceFraction
+let px = [ChinesRandom(), ChinesRandom(), ChinesRandom()]
+print(ChinesRandom(px), px)
+const plenty = '648x^4+108x^3y^3-2268x^3-90x^2y^4-234x^2y^3-117x^2y^2+12xy^5+291xy^4-504xy^3-252xy^2-42y^5+84y^4+54y^2x^3-324yx^4+594yx^3+1890yx^2'
+    //print(Exprs('(9x-6y)^6').Simp().format())486cx^4-2430x^4+720cx^2-3600 x^2-80cuxy+400uxy-63cx+315x-54cuyx^3+270uyx^3+159cuyx^2-795uyx^2+7cuy-1431cx^3+7155x^3+720cx^2-3600x^2-80cuxy+400uxy-63cx+315x-54cuyx^3+270uyx^3+159cuyx^2-795uyx^2+7cuy-35uy
+    //let check = (FactorBrack(sep_7))  6561x^4+1944x^2y^2-288xy^3+16y^4-5832yx^3
+    //print(new Expr(check)+'',new Expr(sep_7)+'')3((x-3-y)^6-8(9x-4y)^6-9x^(x-1))^2
+    //print(new Expr('(9x^(2-x)-6y)(12x-4y^(9x-1))^2').Simp().format({order:true}))'2x^6-41x^5+308x^4-1040x^3+1472x^2-1472xy-512x-2yx^5+41yx^4-308yx^3+1040yx^2+512y
+    //print(flatNumberList(priority.PrimeFactors(192),[192]))//8748x^6-8748vx^5+2916v^2x^4-324v^3x^3-4374x^3y^3+4374vx^2y^3+6561v^2x^2y^2-1458xv^2y^3-729xy^2v^3+162v^3y^3+19683y^2x^4-19683vy^2x^3-26244yx^5+26244vyx^4-8748yv^2x^3+972yx^2v^3
+    //print(factorize('416x^3y^3-895x^2y^3+1726x^2y^2+618xy^3-2067xy^2-1620xy-36y^3x^4-135y^3+108y^2x^5-1104y^2x^4+1021y^2x^3+540y^2-432yx^5+4992yx^4-10740yx^3+7416yx^2'))
+    //print(factorize('108yzx^2+18yz^2+729yx^2-324yx^3-243xyz-8xyz^2'))
+    //console.log(LikeTerms('9x-6', {fliterby:'t',directFx:true}))-384x^6+1344x^5-1056x^4+16x^3y^3+240x^3-56x^2y^3-396x^2y^2+44xy^3+90xy^2-10y^3-144y^2x^4+504y^2x^3+416yx^5-1456yx^4+1144yx^3-260yx^2
+const fx = new Factorize('x^12-70x^11+2194x^10-40682x^9+496532x^8-4197182x^7+25156430x^6-107521598x^5+324563819x^4-673281604x^3+909154960x^2-716438800x+249018000')
+// print(fx.polylineSetFactor())
+
+//  print(getScope('((+mop-op^2-lm^-1opy^-1-8op))^(-2)',Expr))
+// print(simplifyFraction('+9/y(y-op(m/k(m(m/o/p(m-p-l/y(m)-8))/o))/o)'))
+
+
+
+//(m/7y)/(8x-1/y(y-o))/(x-2)/(x-1)/(x-4)
+
+    //let fc = c).OrderExpr({order:true}),{x:-2})-op(m/k(m(m/o/p(m-p-l/y(m)-8))/o))/o
+    //print(fc)
+    //let y = new Factorize(sepqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq5).defineSet()
+    //print(ky.div('-9x+1','9x-1',true))
+    //print(ky.getFactorRange(94,18))
+    //print(new Factorize().createModel('')) 
+    //print(ky)
+    //print(priority.Divisors('-27'))
+    //print(checkExit('111yx^2+4y^3-37xy^2-10a8x^3'))
+
+//print(sep5)
+//print(fallback_operators('(9x-3xy)','(9x-3xy)','==',true))
+//print(peak.peaks,zipKey(peak.peaks),peak.remove  ('ax^6y').forqmat())
+//print(new Fraction(seps).div(sep4,'ct-ou'))
+//print(calc(new Expr(sep2).format(),{'x':2,'y':3,'v':1,'k':2,"u":2}))
+//print(new Fractions('tvx+uxz-tux-vxz+2tuy+2vyz-2tvy-2uyz').div('v^2-2bv-3av+3ab+2a^2+b^2','u-v',true))
+//print(LikeTerms('5x^2y^2t',{fliterby:'x^2y^2',accuracy:{range:{every:true,selectElement:{all:true}}}}))
+//print(calc('(9xy(9x-5y)-2y)^7',{'y':'((o0.555)^2)','x':'(9)'}))    
+//print(new Expr('(9xy(9x-5y)-2y^(9x-1))^3').Simp()+'')
+//print(new Expr('(t-xy^2)^(6)').Simp().format())
+/*function liksTerms(x){
+    let basic_found = new Expr(e).peaks
+    let list_items = priority.alpha
+    for(let corss of basic_found){
+        accelerate_expr[corss] = id(corss)
+    }
+}8*/
