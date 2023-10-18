@@ -1,7 +1,7 @@
 import {func, Expr2D} from "./builtins/index.js"
-import {CompileExpr, RIssex} from "../essential/index.js"
-import {ExprFraction} from "../tools/expression/expr.js"
-import {Expr} from "./tools";
+import {CompileExpr, RIssex} from "./essential/index.js"
+import {ExprFraction, Expr} from "./tools/expression/expr.js"
 
 
-module.exports={tools, CompileExpr, RIssex, ExprFraction, Expr, Expr2D, func}
+
+export {CompileExpr, RIssex, ExprFraction, Expr, Expr2D, func}
